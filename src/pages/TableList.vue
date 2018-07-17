@@ -2,25 +2,37 @@
   <div class="content">
     <div class="md-layout">
       <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
-        <md-card>
-          <md-card-header data-background-color="green">
-            <h4 class="title">Simple Table</h4>
-            <p class="category">Here is a subtitle for this table</p>
+        <md-card md-with-hover>
+          <md-card-header data-background-color="red">
+            <h4 class="title">Person table</h4>
+            <p class="category">Displaying the list of people with sample data</p>
           </md-card-header>
           <md-card-content>
-            <simple-table table-header-color="green"></simple-table>
+            <person-table></person-table>
           </md-card-content>
         </md-card>
       </div>
 
       <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
-        <md-card class="md-card-plain">
-          <md-card-header data-background-color="green">
-            <h4 class="title">Table on Plain Background</h4>
-            <p class="category">Here is a subtitle for this table</p>
+        <md-card md-with-hover>
+          <md-card-header data-background-color="blue">
+            <h4 class="title">List of Banks</h4>
+            <p class="category">Displaying the list of banks with sample data</p>
           </md-card-header>
           <md-card-content>
-            <ordered-table></ordered-table>
+            <bank-table table-header-color="blue"></bank-table>
+          </md-card-content>
+        </md-card>
+      </div>
+
+      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
+        <md-card md-with-hover>
+          <md-card-header data-background-color="green">
+            <h4 class="title">Account table</h4>
+            <p class="category">Displaying the list of accounts with sample data</p>
+          </md-card-header>
+          <md-card-content>
+            <account-table></account-table>
           </md-card-content>
         </md-card>
       </div>
@@ -29,15 +41,15 @@
 </template>
 
 <script>
-import {
-  SimpleTable,
-  OrderedTable
-} from '@/components'
+import BankTable from '../components/Tables/BankTable'
+import PersonTable from '../components/Tables/PersonTable'
+import AccountTable from '../components/Tables/AccountTable'
 
 export default{
   components: {
-    OrderedTable,
-    SimpleTable
+    PersonTable,
+    BankTable,
+    AccountTable
   }
 }
 </script>

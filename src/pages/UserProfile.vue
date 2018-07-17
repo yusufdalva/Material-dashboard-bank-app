@@ -1,12 +1,20 @@
 <template>
   <div class="content">
     <div class="md-layout">
-      <div class="md-layout-item md-medium-size-100 md-size-66">
-        <edit-profile-form data-background-color="green">
+      <div class="md-layout-item md-medium-size-100 md-size-50">
+        <create-bank-form data-background-color="green">
 
-        </edit-profile-form>
+        </create-bank-form>
       </div>
-      <div class="md-layout-item md-medium-size-100 md-size-33">
+      <div class="md-layout-item md-medium-size-100 md-size-50">
+        <create-person-form data-background-color="blue">
+
+        </create-person-form>
+      </div>
+      <div class="md-layout-item md-medium-size-100 md-size-50">
+        <create-account-form></create-account-form>
+      </div>
+      <div class="md-layout-item md-medium-size-100 md-size-50">
         <user-card>
 
         </user-card>
@@ -17,13 +25,17 @@
 
 <script>
 import {
-  EditProfileForm,
   UserCard
 } from '@/pages'
+import CreateBankForm from '../components/Forms/CreateBankForm'
+import CreatePersonForm from '../components/Forms/CreatePersonForm'
+import CreateAccountForm from '../components/Forms/CreateAccountForm'
 
 export default{
   components: {
-    EditProfileForm,
+    CreateAccountForm,
+    CreatePersonForm,
+    CreateBankForm,
     UserCard
   }
 }

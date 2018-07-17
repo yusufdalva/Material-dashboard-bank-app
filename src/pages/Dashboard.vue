@@ -68,7 +68,7 @@
       <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25">
         <stats-card data-background-color="green">
           <template slot="header">
-            <md-icon >store</md-icon>
+            <md-icon >account_balance</md-icon>
           </template>
 
           <template slot="content">
