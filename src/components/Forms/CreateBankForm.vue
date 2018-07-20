@@ -2,31 +2,29 @@
   <div>
     <form>
       <md-card>
-        <md-card-header :data-background-color="dataBackgroundColor">
-          <h4 class="title">New Bank</h4>
-        </md-card-header>
+        <h3 class="title">New Bank</h3>
         <md-card-content>
         <div class="md-layout">
           <div class="md-layout-item md-small-size-100 md-size-100">
             <md-field>
               <label>Location</label>
-              <md-input v-model="location" type="text"></md-input>
+              <md-input v-model="location" type="text" required></md-input>
             </md-field>
           </div>
           <div class="md-layout-item md-small-size-100 md-size-50">
             <md-field>
               <label>Longitude</label>
-              <md-input v-model="longitude" type="number"></md-input>
+              <md-input v-model="longitude" type="number" required></md-input>
             </md-field>
           </div>
           <div class="md-layout-item md-small-size-100 md-size-50">
             <md-field>
               <label>Latitude</label>
-              <md-input v-model="latitude" type="number"></md-input>
+              <md-input v-model="latitude" type="number" required></md-input>
             </md-field>
           </div>
           <div class="md-layout-item md-size-100 text-right">
-            <md-button class="md-raised">Submit</md-button>
+            <md-button class="md-raised" @click="submit">Submit</md-button>
           </div>
           </div>
         </md-card-content>
@@ -37,7 +35,6 @@
 
 <script>
 export default {
-  name: 'create-bank-form',
   props: {
     dataBackgroundColor: {
       type: String,
@@ -50,6 +47,21 @@ export default {
       longitude: null,
       latitude: null
     }
+  },
+  methods: {
+    submit () {
+      let inputBank = {
+        location: this.location,
+        longitude: this.longitude,
+        latitude: this.latitude
+      }
+      this.$emit('add-bank', inputBank)
+    }
   }
 }
 </script>
+<style scoped>
+  h3 {
+    color: #d50000;
+  }
+</style>

@@ -3,7 +3,7 @@
                 v-bind="$attrs">
     <slot>
       <md-icon>{{link.icon}}</md-icon>
-      <p>{{link.name}}</p>
+      <p>{{link.name}} - {{ link.path }}</p>
     </slot>
   </md-list-item>
 </template>

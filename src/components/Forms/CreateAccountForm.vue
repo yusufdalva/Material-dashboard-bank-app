@@ -2,15 +2,14 @@
   <div>
     <form>
       <md-card>
-        <md-card-header :data-background-color="dataBackgroundColor">
-          <h4 class="title">New Account</h4>
-        </md-card-header>
+        <h3 class="title">New Account</h3>
         <md-card-content>
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100 md-size-50">
               <md-field>
-                <md-select v-model="selectedPeople">
-                  <md-option v-for="person in people" v-bind:key="person.name" :value="person.id">
+                <label>Customers</label>
+                <md-select v-model="selectedPerson" required>
+                  <md-option v-for="person in people" :key="person.id" :value="person.id">
                     {{ person.name }}
                   </md-option>
                 </md-select>
@@ -18,16 +17,24 @@
             </div>
             <div class="md-layout-item md-small-size-100 md-size-50">
               <md-field>
-                <md-select v-model="selectedBank">
-                  <md-option v-for="bank in banks" v-bind:key="bank.City" :value="bank.id">
+                <label>Banks</label>
+                <md-select v-model="selectedBank" required>
+                  <md-option v-for="bank in banks" :key="bank.id" :value="bank.id">
                     {{ bank.City}} - {{ bank.County }}
                   </md-option>
                 </md-select>
               </md-field>
             </div>
-            <div class="md-layout-item md-size-100 text-right">
-              <md-button class="md-raised">Submit</md-button>
+            <div class="md-layout-item md-small-size-100 md-size-50">
+              <md-field>
+                <label>Balance</label>
+                <md-input v-model="accBalance" type="number" required></md-input>
+              </md-field>
             </div>
+            <div class="md-layout-item md-size-100 text-right">
+              <md-button class="md-raised" type="submit" @click="submit">Submit</md-button>
+            </div>
+            <div>Bank ID: {{ selectedBank }} , Person ID: {{ selectedPerson }}</div>
             </div>
         </md-card-content>
       </md-card>
@@ -36,8 +43,47 @@
 </template>
 
 <script>
+let people = [
+  {
+    id: 17328372783,
+    name: 'Mehmet',
+    email: 'memo@gmail.com'
+  },
+  {
+    id: 938298392832,
+    name: 'Şahin',
+    email: 'sahin@hotmail.com'
+  },
+  {
+    id: 348742033,
+    name: 'Fırat',
+    email: 'turAt@yahoo.com'
+  }
+]
+let banks = [
+  {
+    id: 1738473874,
+    City: 'Ankara',
+    County: 'Çankaya',
+    Lng: (Math.random() * 200).toFixed(2),
+    Lat: (Math.random() * 200).toFixed(2)
+  },
+  {
+    id: 24738743874,
+    City: 'Istanbul',
+    County: 'Kadıköy',
+    Lng: (Math.random() * 200).toFixed(2),
+    Lat: (Math.random() * 200).toFixed(2)
+  },
+  {
+    id: 38277827382,
+    City: 'İzmir',
+    County: 'Alsancak',
+    Lng: (Math.random() * 200).toFixed(2),
+    Lat: (Math.random() * 200).toFixed(2)
+  }
+]
 export default {
-  name: 'create-account-form',
   props: {
     dataBackgroundColor: {
       type: String,
@@ -46,48 +92,22 @@ export default {
   },
   data () {
     return {
-      selectedPeople: [],
-      selectedBank: [],
-      people: [
-        {
-          id: 1,
-          name: 'Mehmet',
-          email: 'memo@gmail.com'
-        },
-        {
-          id: 2,
-          name: 'Şahin',
-          email: 'sahin@hotmail.com'
-        },
-        {
-          id: 3,
-          name: 'Fırat',
-          email: 'turAt@yahoo.com'
-        }
-      ],
-      banks: [
-        {
-          id: 1,
-          City: 'Ankara',
-          County: 'Çankaya',
-          Lng: (Math.random() * 200).toFixed(2),
-          Lat: (Math.random() * 200).toFixed(2)
-        },
-        {
-          id: 2,
-          City: 'Istanbul',
-          County: 'Kadıköy',
-          Lng: (Math.random() * 200).toFixed(2),
-          Lat: (Math.random() * 200).toFixed(2)
-        },
-        {
-          id: 3,
-          City: 'İzmir',
-          County: 'Alsancak',
-          Lng: (Math.random() * 200).toFixed(2),
-          Lat: (Math.random() * 200).toFixed(2)
-        }
-      ]
+      selectedPerson: 0,
+      selectedBank: 0,
+      accBalance: null,
+      people: people,
+      banks: banks
+    }
+  },
+  methods: {
+    submit () {
+      let newAccount = {
+        person_id: this.selectedPerson,
+        id: Math.floor(Math.random() * 10000000),
+        bank_id: this.selectedBank,
+        accBalance: this.accBalance
+      }
+      this.$emit('add-account', newAccount)
     }
   }
 }
@@ -95,8 +115,7 @@ export default {
 </script>
 
 <style scoped>
-  md-option {
-    text-align-last: center;
+  h3 {
+    color: #d50000;
   }
-
 </style>

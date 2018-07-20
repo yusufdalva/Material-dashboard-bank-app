@@ -1,44 +1,45 @@
 <template>
   <div>
-    <md-card>
-      <md-card-header :data-background-color="dataBackgroundColor">
-        <h4 class="title">New Customer</h4>
-      </md-card-header>
-      <md-card-content>
-        <div class="md-layout">
-          <div class="md-layout-item md-small-size-100 md-size-50">
-            <md-field>
-              <md-input v-model="firstname" type="text" placeholder="First Name"></md-input>
-            </md-field>
+    <form>
+      <md-card>
+        <h3 class="title">New Customer</h3>
+        <md-card-content>
+          <div class="md-layout">
+            <div class="md-layout-item md-small-size-100 md-size-50">
+              <md-field>
+                <label>First Name</label>
+                <md-input v-model="firstname" type="text" required></md-input>
+              </md-field>
+            </div>
+            <div class="md-layout-item md-small-size-100 md-size-50">
+              <md-field>
+                <label>Last Name</label>
+                <md-input v-model="lastname" type="text" required></md-input>
+              </md-field>
+            </div>
+            <div class="md-layout-item md-small-size-100 md-size-50">
+              <md-field>
+                <md-input v-model="joindate" type="date" required></md-input>
+              </md-field>
+            </div>
+            <div class="md-layout-item md-small-size-100 md-size-50">
+              <md-field>
+                <label>Email</label>
+                <md-input v-model="email" type="email" required></md-input>
+              </md-field>
+            </div>
+            <div class="md-layout-item md-size-100 text-right">
+              <md-button class="md-raised" type="submit" @click="submit">Submit</md-button>
+            </div>
           </div>
-          <div class="md-layout-item md-small-size-100 md-size-50">
-            <md-field>
-              <md-input v-model="lastname" type="text" placeholder="Last Name"></md-input>
-            </md-field>
-          </div>
-          <div class="md-layout-item md-small-size-100 md-size-50">
-            <md-field>
-              <!-- <label>Join Date</label> -->
-              <md-input v-model="joindate" type="date" placeholder="Join Date"></md-input>
-            </md-field>
-          </div>
-          <div class="md-layout-item md-small-size-100 md-size-50">
-            <md-field>
-              <md-input v-model="title" type="text" placeholder="Job Title"></md-input>
-            </md-field>
-          </div>
-          <div class="md-layout-item md-size-100 text-right">
-            <md-button class="md-raised">Submit</md-button>
-          </div>
-        </div>
-      </md-card-content>
-    </md-card>
+        </md-card-content>
+      </md-card>
+    </form>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'create-person-form',
   props: {
     dataBackgroundColor: {
       type: String,
@@ -50,8 +51,24 @@ export default {
       firstname: null,
       lastname: null,
       joindate: null,
-      title: null
+      email: null
+    }
+  },
+  methods: {
+    submit () {
+      let inputPerson = {
+        firstname: this.firstname,
+        lastname: this.lastname,
+        joindate: this.joindate,
+        email: this.email
+      }
+      this.$emit('add-customer', inputPerson)
     }
   }
 }
 </script>
+<style scoped>
+  h3 {
+    color: #d50000;
+  }
+</style>
