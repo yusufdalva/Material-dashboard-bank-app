@@ -75,9 +75,26 @@ export default {
         email: obj.email,
         date: obj.joindate
       }
-      people.push(newPerson)
-      if (this.showForm) {
-        this.showForm = false
+      if (obj.firstname !== null && obj.lastname !== null && obj.email !== null && obj.date !== null) {
+        people.push(newPerson)
+        if (this.showForm) {
+          this.showForm = false
+        }
+      } else {
+        let errorMsg = ''
+        if (obj.firstname === null) {
+          errorMsg += 'Enter your name to "First Name" area to generate account \n'
+        }
+        if (obj.lastname === null) {
+          errorMsg += 'Enter your surname to "Last Name" area to generate account \n'
+        }
+        if (obj.joindate === null) {
+          errorMsg += 'Enter your joining date to date area to generate account \n'
+        }
+        if (obj.email === null) {
+          errorMsg += 'Enter your email address to "E-mail" area to generate account \n'
+        }
+        alert(errorMsg)
       }
     }
   }

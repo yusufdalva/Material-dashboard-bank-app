@@ -87,9 +87,23 @@ export default {
         bank_id: obj.bank_id,
         accBalance: obj.accBalance
       }
-      accounts.push(newAccount)
-      if (this.showForm) {
-        this.showForm = false
+      if ((newAccount.person_id !== null) && (newAccount.bank_id !== null) && (newAccount.accBalance !== null)) {
+        accounts.push(newAccount)
+        if (this.showForm) {
+          this.showForm = false
+        }
+      } else {
+        let errorMsg = ''
+        if (newAccount.person_id === null) {
+          errorMsg += 'Please select a target customer to generate account \n'
+        }
+        if (newAccount.bank_id === null) {
+          errorMsg += 'Please select a target bank to generate account \n'
+        }
+        if (newAccount.accBalance === null) {
+          errorMsg += 'Please enter an initial balance for the account to generate \n'
+        }
+        alert(errorMsg)
       }
     }
   }

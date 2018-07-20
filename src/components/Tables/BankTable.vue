@@ -14,7 +14,6 @@
       <div>
         <create-bank-form v-if="showForm" @add-bank="addBank"></create-bank-form>
       </div>
-      <div>{{ showForm }}</div>
     </md-table>
   </div>
 </template>
@@ -63,7 +62,7 @@ export default {
     },
     cancelOp () {
       if (this.showForm) {
-        this.showForm = true
+        this.showForm = false
       }
     },
     addBank: function (obj) {
@@ -73,9 +72,24 @@ export default {
         Lng: obj.longitude,
         Lat: obj.latitude
       }
-      banks.push(newBank)
-      if (this.showForm) {
-        this.showForm = false
+      console.log(newBank.Location === null)
+      if ((newBank.Location !== null || newBank.Location !== '') && newBank.Lng !== null && newBank.Lat !== null) {
+        banks.push(newBank)
+        if (this.showForm) {
+          this.showForm = false
+        }
+      } else {
+        let errorMsg = ''
+        if (newBank.Location === null) {
+          errorMsg += 'Please enter a location to generate the bank \n'
+        }
+        if (newBank.Lng === null) {
+          errorMsg += 'Please enter a longitude for the location of the bank to generate the bank \n'
+        }
+        if (newBank.Lat === null) {
+          errorMsg += 'Please enter a latitude for the location of the bank to generate the bank \n'
+        }
+        alert(errorMsg)
       }
     }
   },

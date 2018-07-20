@@ -92,8 +92,8 @@ export default {
   },
   data () {
     return {
-      selectedPerson: 0,
-      selectedBank: 0,
+      selectedPerson: null,
+      selectedBank: null,
       accBalance: null,
       people: people,
       banks: banks

@@ -12,6 +12,18 @@
         <md-icon>person</md-icon>
         <p>User Profile</p>
       </sidebar-link>
+      <sidebar-link to="/customers">
+        <md-icon>face</md-icon>
+        <p>Customers</p>
+      </sidebar-link>
+      <sidebar-link to="/banks">
+        <md-icon>account_balance</md-icon>
+        <p>Banks</p>
+      </sidebar-link>
+      <sidebar-link to="/accounts">
+        <md-icon>account_box</md-icon>
+        <p>Accounts</p>
+      </sidebar-link>
       <sidebar-link to="/table">
         <md-icon>content_paste</md-icon>
         <p>Table list</p>

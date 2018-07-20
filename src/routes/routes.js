@@ -7,6 +7,9 @@ import Typography from '@/pages/Typography.vue'
 import Icons from '@/pages/Icons.vue'
 import Maps from '@/pages/Maps.vue'
 import Notifications from '@/pages/Notifications.vue'
+import Customers from '@/pages/Customers.vue'
+import Banks from '@/pages/Banks.vue'
+import Accounts from '@/pages/Accounts.vue'
 import UpgradeToPRO from '@/pages/UpgradeToPRO.vue'
 
 const routes = [
@@ -19,6 +22,21 @@ const routes = [
         path: 'dashboard',
         name: 'Dashboard',
         component: Dashboard
+      },
+      {
+        path: 'customers',
+        name: 'Customers',
+        component: Customers
+      },
+      {
+        path: 'banks',
+        name: 'Banks',
+        component: Banks
+      },
+      {
+        path: 'accounts',
+        name: 'Accounts',
+        component: Accounts
       },
       {
         path: 'user',
