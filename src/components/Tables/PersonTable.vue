@@ -75,7 +75,8 @@ export default {
         email: obj.email,
         date: obj.joindate
       }
-      if (obj.firstname !== null && obj.lastname !== null && obj.email !== null && obj.date !== null) {
+      if (obj.firstname !== null && obj.lastname !== null && obj.email !== null && obj.date !== null &&
+        obj.email.indexOf('@') !== -1) {
         people.push(newPerson)
         if (this.showForm) {
           this.showForm = false
@@ -91,8 +92,8 @@ export default {
         if (obj.joindate === null) {
           errorMsg += 'Enter your joining date to date area to generate account \n'
         }
-        if (obj.email === null) {
-          errorMsg += 'Enter your email address to "E-mail" area to generate account \n'
+        if ((obj.email === null) || (obj.email.indexOf('@') === -1)) {
+          errorMsg += 'Enter a valid email address to "E-mail" area to generate account \n'
         }
         alert(errorMsg)
       }

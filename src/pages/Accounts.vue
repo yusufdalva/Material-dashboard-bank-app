@@ -4,7 +4,7 @@
       <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
         <md-card md-with-hover>
           <md-card-header data-background-color="green">
-            <h4 class="title">Account table</h4>
+            <h4 class="title">List of Accounts</h4>
             <p class="category">Displaying the list of accounts with sample data</p>
           </md-card-header>
           <md-card-content>
