@@ -19,11 +19,6 @@
             </div>
             <div class="md-layout-item md-small-size-100 md-size-50">
               <md-field>
-                <md-input v-model="joindate" type="date" required></md-input>
-              </md-field>
-            </div>
-            <div class="md-layout-item md-small-size-100 md-size-50">
-              <md-field>
                 <label>Email</label>
                 <md-input v-model="email" type="email" required></md-input>
               </md-field>
@@ -50,7 +45,6 @@ export default {
     return {
       firstname: null,
       lastname: null,
-      joindate: null,
       email: null
     }
   },
@@ -59,7 +53,6 @@ export default {
       let inputPerson = {
         firstname: this.firstname,
         lastname: this.lastname,
-        joindate: this.joindate,
         email: this.email
       }
       this.$emit('add-customer', inputPerson)

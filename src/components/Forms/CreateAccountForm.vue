@@ -9,8 +9,8 @@
               <md-field>
                 <label>Customers</label>
                 <md-select v-model="selectedPerson" required>
-                  <md-option v-for="person in people" :key="person.id" :value="person.id">
-                    {{ person.name }}
+                  <md-option v-for="person in people" :key="person._id" :value="person._id">
+                   Person ID : {{ person._id }}
                   </md-option>
                 </md-select>
               </md-field>
@@ -19,8 +19,8 @@
               <md-field>
                 <label>Banks</label>
                 <md-select v-model="selectedBank" required>
-                  <md-option v-for="bank in banks" :key="bank.id" :value="bank.id">
-                    {{ bank.City}} - {{ bank.County }}
+                  <md-option v-for="bank in banks" :key="bank._id" :value="bank._id">
+                   Bank ID : {{ bank._id }}
                   </md-option>
                 </md-select>
               </md-field>
@@ -43,46 +43,7 @@
 </template>
 
 <script>
-let people = [
-  {
-    id: 17328372783,
-    name: 'Mehmet',
-    email: 'memo@gmail.com'
-  },
-  {
-    id: 938298392832,
-    name: 'Şahin',
-    email: 'sahin@hotmail.com'
-  },
-  {
-    id: 348742033,
-    name: 'Fırat',
-    email: 'turAt@yahoo.com'
-  }
-]
-let banks = [
-  {
-    id: 1738473874,
-    City: 'Ankara',
-    County: 'Çankaya',
-    Lng: (Math.random() * 200).toFixed(2),
-    Lat: (Math.random() * 200).toFixed(2)
-  },
-  {
-    id: 24738743874,
-    City: 'Istanbul',
-    County: 'Kadıköy',
-    Lng: (Math.random() * 200).toFixed(2),
-    Lat: (Math.random() * 200).toFixed(2)
-  },
-  {
-    id: 38277827382,
-    City: 'İzmir',
-    County: 'Alsancak',
-    Lng: (Math.random() * 200).toFixed(2),
-    Lat: (Math.random() * 200).toFixed(2)
-  }
-]
+import axios from 'axios'
 export default {
   props: {
     dataBackgroundColor: {
@@ -95,17 +56,26 @@ export default {
       selectedPerson: null,
       selectedBank: null,
       accBalance: null,
-      people: people,
-      banks: banks
+      people: [],
+      banks: []
     }
+  },
+  created () {
+    axios.get('http://localhost:4040/api/customers')
+      .then(response => {
+        this.people = response.data
+      })
+    axios.get('http://localhost:4040/api/banks')
+      .then(response => {
+        this.banks = response.data
+      })
   },
   methods: {
     submit () {
       let newAccount = {
-        person_id: this.selectedPerson,
-        id: Math.floor(Math.random() * 10000000),
-        bank_id: this.selectedBank,
-        accBalance: this.accBalance
+        owner: this.selectedPerson,
+        bank: this.selectedBank,
+        balance: this.accBalance
       }
       this.$emit('add-account', newAccount)
     }

@@ -2,10 +2,10 @@
   <div>
     <md-table v-model="accounts" :table-header-color="tableHeaderColor" >
       <md-table-row slot="md-table-row" slot-scope="{ item }">
-        <md-table-cell md-label="Person ID">{{ item.person_id }}</md-table-cell>
-        <md-table-cell md-label="Bank ID">{{ item.bank_id }}</md-table-cell>
-        <md-table-cell md-label="IBAN">{{ item.iban }}</md-table-cell>
-        <md-table-cell md-label="Balance">{{ item.accBalance }}</md-table-cell>
+        <md-table-cell md-label="ID">{{ item._id }}</md-table-cell>
+        <md-table-cell md-label="Person ID">{{ item.owner }}</md-table-cell>
+        <md-table-cell md-label="Bank ID">{{ item.bank }}</md-table-cell>
+        <md-table-cell md-label="Balance">{{ item.balance }}</md-table-cell>
       </md-table-row>
       <div class="md-layout-item md-size-100 text-right">
         <md-button class="md-info" @click="enterNew" v-if="!showForm">Create New Account</md-button>
@@ -19,39 +19,8 @@
 </template>
 
 <script>
+import axios from 'axios'
 import CreateAccountForm from '../Forms/CreateAccountForm'
-let accounts = [
-  {
-    person_id: Math.floor(Math.random() * 3) + 1,
-    iban: 'TR200006277989188594311367',
-    bank_id: Math.floor(Math.random() * 3) + 1,
-    accBalance: (Math.random() * 1000000).toFixed(2)
-  },
-  {
-    person_id: Math.floor(Math.random() * 3) + 1,
-    iban: 'TR240006286471238664357838',
-    bank_id: Math.floor(Math.random() * 3) + 1,
-    accBalance: (Math.random() * 1000000).toFixed(2)
-  },
-  {
-    person_id: Math.floor(Math.random() * 3) + 1,
-    iban: 'TR030006235672666598567775',
-    bank_id: Math.floor(Math.random() * 3) + 1,
-    accBalance: (Math.random() * 1000000).toFixed(2)
-  },
-  {
-    person_id: Math.floor(Math.random() * 3) + 1,
-    iban: 'TR230006225254179799995365',
-    bank_id: Math.floor(Math.random() * 3) + 1,
-    accBalance: (Math.random() * 1000000).toFixed(2)
-  },
-  {
-    person_id: Math.floor(Math.random() * 3) + 1,
-    iban: 'TR970006293248724621515538',
-    bank_id: Math.floor(Math.random() * 3) + 1,
-    accBalance: (Math.random() * 1000000).toFixed(2)
-  }
-]
 export default {
   components: {
     CreateAccountForm
@@ -66,8 +35,15 @@ export default {
     return {
       showForm: false,
       selected: [],
-      accounts: accounts
+      accounts: []
     }
+  },
+  created () {
+    axios.get('http://localhost:4040/api/accounts')
+      .then(response => {
+        this.accounts = response.data
+        console.log('On Accounts page: ' + this.accounts)
+      })
   },
   methods: {
     enterNew () {
@@ -81,31 +57,36 @@ export default {
       }
     },
     addAccount (obj) {
-      let newAccount = {
-        person_id: obj.person_id,
-        iban: 'TR200006277989188594311367',
-        bank_id: obj.bank_id,
-        accBalance: obj.accBalance
-      }
-      if ((newAccount.person_id !== null) && (newAccount.bank_id !== null) && (newAccount.accBalance !== null)) {
-        accounts.push(newAccount)
+      if ((obj.person_id !== null) && (obj.bank_id !== null) && (obj.accBalance !== null)) {
+        axios.post('http://localhost:4040/api/accounts', {
+          owner: obj.owner,
+          bank: obj.bank,
+          balance: obj.balance
+        })
+          .then(() => {
+            axios.get('http://localhost:4040/api/accounts')
+              .then(response => {
+                this.accounts = response.data
+              })
+          })
         if (this.showForm) {
           this.showForm = false
         }
       } else {
         let errorMsg = ''
-        if (newAccount.person_id === null) {
+        if (obj.owner === null) {
           errorMsg += 'Please select a target customer to generate account \n'
         }
-        if (newAccount.bank_id === null) {
+        if (obj.bank === null) {
           errorMsg += 'Please select a target bank to generate account \n'
         }
-        if (newAccount.accBalance === null) {
+        if (obj.balance === null) {
           errorMsg += 'Please enter an initial balance for the account to generate \n'
         }
         alert(errorMsg)
       }
     }
+
   }
 }
 </script>

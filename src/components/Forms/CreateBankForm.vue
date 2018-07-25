@@ -5,7 +5,13 @@
         <h3 class="title">New Bank</h3>
         <md-card-content>
         <div class="md-layout">
-          <div class="md-layout-item md-small-size-100 md-size-100">
+          <div class="md-layout-item md-small-size-100 md-size-50">
+            <md-field>
+              <label>Bank Name</label>
+              <md-input v-model="bankname" type="text" required></md-input>
+            </md-field>
+          </div>
+          <div class="md-layout-item md-small-size-100 md-size-50">
             <md-field>
               <label>Location</label>
               <md-input v-model="location" type="text" required></md-input>
@@ -43,6 +49,7 @@ export default {
   },
   data () {
     return {
+      bankname: null,
       location: null,
       longitude: null,
       latitude: null
@@ -51,6 +58,7 @@ export default {
   methods: {
     submit () {
       let inputBank = {
+        bankname: this.bankname,
         location: this.location,
         longitude: this.longitude,
         latitude: this.latitude
