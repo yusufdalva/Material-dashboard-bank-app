@@ -2,7 +2,7 @@
   <div>
     <form>
       <md-card>
-        <h3 class="title">New Bank</h3>
+        <h3 class="title">Create Bank</h3>
         <md-card-content>
         <div class="md-layout">
           <div class="md-layout-item md-small-size-100 md-size-50">

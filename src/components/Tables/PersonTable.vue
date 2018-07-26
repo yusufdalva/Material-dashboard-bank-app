@@ -118,7 +118,7 @@ export default {
           if (obj.email !== null) {
             toChange.email = obj.email
           }
-          if (obj.firstname !== null && obj.lastname !== null && obj.email !== null) {
+          if (obj.firstname !== null || obj.lastname !== null || obj.email !== null) {
             axios.put(url, toChange)
             for (let i = 0; i < this.people.length; i++) {
               if (this.people[i]._id === this.toUpdate) {

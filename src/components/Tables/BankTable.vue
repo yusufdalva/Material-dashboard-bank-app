@@ -2,6 +2,9 @@
   <div>
     <md-table v-model="banks" :table-header-color="tableHeaderColor">
       <md-table-row slot="md-table-row" slot-scope="{ item }">
+        <md-table-cell md-label="Update">
+          <md-radio v-model="toUpdate" :value="item._id"></md-radio>
+        </md-table-cell>
         <md-table-cell md-label="ID">{{ item._id }}</md-table-cell>
         <md-table-cell md-label="Bank Name">{{ item.bankname }}</md-table-cell>
         <md-table-cell md-label="Location">{{ item.location }}</md-table-cell>
@@ -9,11 +12,16 @@
         <md-table-cell md-label="Latitude">{{ item.latitude }}</md-table-cell>
       </md-table-row>
       <div class="md-layout-item md-size-100 text-right">
-        <md-button class="md-info" @click="enterNew" v-if="!showForm">Create New Bank</md-button>
+        <md-button class="md-info" @click="enterNew" v-if="!showForm && !formToCreate">Create</md-button>
+        <md-button class="md-info" @click="updateInst" v-if="toUpdate && !showForm && !formToUpdate">
+          Update
+        </md-button>
         <md-button class="md-info" @click="cancelOp" v-if="showForm">Cancel</md-button>
       </div>
+      <div>{{ toUpdate }}</div>
       <div>
-        <create-bank-form v-if="showForm" @add-bank="addBank"></create-bank-form>
+        <update-bank-form v-if="showForm && formToUpdate" @update-bank="updateBank"></update-bank-form>
+        <create-bank-form v-if="showForm && formToCreate" @add-bank="addBank"></create-bank-form>
       </div>
     </md-table>
   </div>
@@ -21,6 +29,7 @@
 
 <script>
 import axios from 'axios'
+import UpdateBankForm from '../Forms/UpdateBankForm'
 import CreateBankForm from '../Forms/CreateBankForm'
 export default {
   props: {
@@ -31,6 +40,10 @@ export default {
   },
   data () {
     return {
+      toUpdate: null,
+      toDelete: null,
+      formToCreate: false,
+      formToUpdate: false,
       showForm: false,
       selected: [],
       banks: []
@@ -44,18 +57,21 @@ export default {
   },
   methods: {
     enterNew: function () {
-      if (!this.showForm) {
-        this.showForm = true
-      }
+      this.showForm = true
+      this.formToCreate = true
     },
     cancelOp () {
-      if (this.showForm) {
-        this.showForm = false
-      }
+      this.showForm = false
+      this.formToUpdate = false
+      this.formToCreate = false
     },
-    addBank: function (obj) {
+    updateInst () {
+      this.showForm = true
+      this.formToUpdate = true
+    },
+    addBank (obj) {
       if ((obj.bankname !== null || obj.bankname !== '') && (obj.location !== null || obj.location !== '') &&
-        obj.longitude !== null && obj.latitude !== null) {
+      obj.longitude !== null && obj.latitude !== null) {
         axios.post('http://localhost:4040/api/banks', {
           bankname: obj.bankname,
           location: obj.location,
@@ -83,10 +99,42 @@ export default {
         }
         alert(errorMsg)
       }
+    },
+    updateBank (obj) {
+      const url = 'http://localhost:4040/api/banks/' + this.toUpdate
+      let toChange = {}
+      axios.get(url)
+        .then(response => {
+          toChange = response.data
+        })
+        .then(() => {
+          if (obj.bankname !== null) {
+            toChange.bankname = obj.bankname
+          }
+          if (obj.location !== null) {
+            toChange.location = obj.location
+          }
+          if (obj.longitude !== null) {
+            toChange.latitude = obj.latitude
+          }
+          if (obj.latitude !== null) {
+            toChange.longitude = obj.longitude
+          }
+          if (obj.bankname !== null || obj.location !== null || obj.longitude !== null || obj.latitude !== null) {
+            axios.put(url, toChange)
+            for (let i = 0; i < this.banks.length; i++) {
+              if (this.banks[i]._id === this.toUpdate) {
+                this.banks[i] = toChange
+              }
+            }
+            this.showForm = false
+            this.formToUpdate = false
+          }
+        })
     }
-
   },
   components: {
+    UpdateBankForm,
     CreateBankForm
   }
 }

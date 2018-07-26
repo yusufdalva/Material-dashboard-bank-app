@@ -13,7 +13,8 @@
           <div class="md-layout-item md-small-size-100 md-size-50">
             <md-field>
               <label>Last Name</label>
-              <md-input v-model="lastname" type="text"></md-input>
+              <md-input v-if="!lastname" v-model="lastname" type="text"></md-input>
+              <md-input v-if="lastname" v-model="lastname" type="text" required></md-input>
             </md-field>
           </div>
           <div class="md-layout-item md-small-size-100 md-size-50">
@@ -42,12 +43,12 @@ export default {
   },
   methods: {
     submit () {
-      let updatePerson = {
+      let updateObj = {
         firstname: this.firstname,
         lastname: this.lastname,
         email: this.email
       }
-      this.$emit('update-customer', updatePerson)
+      this.$emit('update-customer', updateObj)
     }
   }
 }
