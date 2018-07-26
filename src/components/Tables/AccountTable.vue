@@ -2,17 +2,21 @@
   <div>
     <md-table v-model="accounts" :table-header-color="tableHeaderColor" >
       <md-table-row slot="md-table-row" slot-scope="{ item }">
+        <md-table-cell md-label="Update">
+          <md-radio v-model="toUpdate" :value="item._id"></md-radio>
+        </md-table-cell>
         <md-table-cell md-label="ID">{{ item._id }}</md-table-cell>
         <md-table-cell md-label="Person ID">{{ item.owner }}</md-table-cell>
         <md-table-cell md-label="Bank ID">{{ item.bank }}</md-table-cell>
         <md-table-cell md-label="Balance">{{ item.balance }}</md-table-cell>
       </md-table-row>
+      <div>{{ toUpdate }}</div>
       <div class="md-layout-item md-size-100 text-right">
-        <md-button class="md-info" @click="enterNew" v-if="!showForm">Create New Account</md-button>
-        <md-button class="md-info" @click="cancelOp" v-if="showForm">Cancel</md-button>
+        <md-button class="md-info" @click="enterNew" v-if="!formToCreate">Create New Account</md-button>
+        <md-button class="md-info" @click="cancelOp" v-if="formToCreate">Cancel</md-button>
       </div>
       <div>
-        <create-account-form v-if="showForm" @add-account="addAccount"></create-account-form>
+        <create-account-form v-if="formToCreate" @add-account="addAccount"></create-account-form>
       </div>
     </md-table>
   </div>
@@ -33,7 +37,9 @@ export default {
   },
   data () {
     return {
-      showForm: false,
+      toUpdate: null,
+      formToUpdate: false,
+      formToCreate: false,
       selected: [],
       accounts: []
     }
@@ -42,18 +48,17 @@ export default {
     axios.get('http://localhost:4040/api/accounts')
       .then(response => {
         this.accounts = response.data
-        console.log('On Accounts page: ' + this.accounts)
       })
   },
   methods: {
     enterNew () {
-      if (!this.showForm) {
-        this.showForm = true
+      if (!this.formToCreate) {
+        this.formToCreate = true
       }
     },
     cancelOp () {
-      if (this.showForm) {
-        this.showForm = false
+      if (this.formToCreate) {
+        this.formToCreate = false
       }
     },
     addAccount (obj) {
@@ -63,14 +68,11 @@ export default {
           bank: obj.bank,
           balance: obj.balance
         })
-          .then(() => {
-            axios.get('http://localhost:4040/api/accounts')
-              .then(response => {
-                this.accounts = response.data
-              })
+          .then(response => {
+            this.accounts.push(response.data)
           })
-        if (this.showForm) {
-          this.showForm = false
+        if (this.formToCreate) {
+          this.formToCreate = false
         }
       } else {
         let errorMsg = ''

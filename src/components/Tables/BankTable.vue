@@ -40,7 +40,6 @@ export default {
     axios.get('http://localhost:4040/api/banks')
       .then(response => {
         this.banks = response.data
-        console.log('On Bank Page: ' + this.banks)
       })
   },
   methods: {
@@ -62,11 +61,8 @@ export default {
           location: obj.location,
           latitude: obj.latitude,
           longitude: obj.longitude
-        }).then(() => {
-          axios.get('http://localhost:4040/api/banks')
-            .then(response => {
-              this.banks = response.data
-            })
+        }).then(response => { // response.data returns the new instance created
+          this.banks.push(response.data)
         })
         if (this.showForm) {
           this.showForm = false

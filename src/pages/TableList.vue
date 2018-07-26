@@ -36,17 +36,23 @@
           </md-card-content>
         </md-card>
       </div>
+
+      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
+        <update-person-form></update-person-form>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import UpdatePersonForm from '../components/Forms/UpdatePersonForm'
 import BankTable from '../components/Tables/BankTable'
 import PersonTable from '../components/Tables/PersonTable'
 import AccountTable from '../components/Tables/AccountTable'
 
 export default{
   components: {
+    UpdatePersonForm,
     PersonTable,
     BankTable,
     AccountTable

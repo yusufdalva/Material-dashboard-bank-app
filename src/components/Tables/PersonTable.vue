@@ -2,17 +2,24 @@
   <div>
     <md-table v-model="people" :table-header-color="tableHeaderColor">
       <md-table-row slot="md-table-row" slot-scope="{ item }">
+        <md-table-cell md-label="Update">
+          <md-radio v-model="toUpdate" :value="item._id"></md-radio>
+        </md-table-cell>
         <md-table-cell md-label="ID">{{ item._id }}</md-table-cell>
         <md-table-cell md-label="Full Name">{{ item.customername }}</md-table-cell>
         <md-table-cell md-label="E-mail">{{ item.email }}</md-table-cell>
         <md-table-cell md-label="Join Date">{{ item.createdAt }}</md-table-cell>
       </md-table-row>
+      <div>{{ toUpdate }}</div>
       <div class="md-layout-item md-size-100 text-right">
-        <md-button class="md-info" @click="enterNew" v-if="!showForm">Create New Customer</md-button>
+        <md-button class="md-info" @click="enterNew" v-if="!showForm && !formToCreate">Create</md-button>
+        <md-button class="md-info" @click="updateInst" v-if="toUpdate && !showForm && !formToUpdate">
+          Update</md-button>
         <md-button class="md-info" @click="cancelOp" v-if="showForm">Cancel</md-button>
       </div>
       <div>
-        <create-person-form v-if="showForm" @add-customer="addCustomer"></create-person-form>
+        <update-person-form v-if="showForm && formToUpdate" @update-customer="updateCustomer"></update-person-form>
+        <create-person-form v-if="showForm && formToCreate" @add-customer="addCustomer"></create-person-form>
       </div>
     </md-table>
   </div>
@@ -21,9 +28,11 @@
 <script>
 import axios from 'axios'
 import CreatePersonForm from '../Forms/CreatePersonForm'
+import UpdatePersonForm from '../Forms/UpdatePersonForm'
 export default {
   components: {
-    CreatePersonForm
+    CreatePersonForm,
+    UpdatePersonForm
   },
   props: {
     tableHeaderColor: {
@@ -35,7 +44,6 @@ export default {
     axios.get('http://localhost:4040/api/customers')
       .then(response => {
         this.people = response.data
-        console.log('On Customers page: ' + this.people)
       })
       .catch(err => {
         throw err
@@ -43,6 +51,10 @@ export default {
   },
   data () {
     return {
+      toUpdate: null,
+      toDelete: null,
+      formToCreate: false,
+      formToUpdate: false,
       showForm: false,
       selected: [],
       people: []
@@ -50,14 +62,21 @@ export default {
   },
   methods: {
     enterNew () {
-      if (!this.showForm) {
-        this.showForm = true
-      }
+      this.showForm = true
+      this.formToCreate = true
     },
     cancelOp () {
-      if (this.showForm) {
-        this.showForm = false
+      this.showForm = false
+      if (this.formToCreate) {
+        this.formToCreate = false
       }
+      if (this.formToUpdate) {
+        this.formToUpdate = false
+      }
+    },
+    updateInst () {
+      this.showForm = true
+      this.formToUpdate = true
     },
     addCustomer (obj) {
       if (obj.firstname !== null && obj.lastname !== null && obj.email !== null &&
@@ -65,11 +84,8 @@ export default {
         axios.post('http://localhost:4040/api/customers', {
           customername: obj.firstname + ' ' + obj.lastname,
           email: obj.email
-        }).then(() => {
-          axios.get('http://localhost:4040/api/customers')
-            .then(response => {
-              this.people = response.data
-            })
+        }).then(response => { // response.data returns the new instance created
+          this.people.push(response.data)
         })
         if (this.showForm) {
           this.showForm = false
@@ -87,6 +103,32 @@ export default {
         }
         alert(errorMsg)
       }
+    },
+    updateCustomer (obj) {
+      const url = 'http://localhost:4040/api/customers/' + this.toUpdate
+      let toChange = {}
+      axios.get(url)
+        .then(response => {
+          toChange = response.data
+        })
+        .then(() => {
+          if (obj.firstname !== null && obj.lastname !== null) {
+            toChange.customername = obj.firstname + ' ' + obj.lastname
+          }
+          if (obj.email !== null) {
+            toChange.email = obj.email
+          }
+          if (obj.firstname !== null && obj.lastname !== null && obj.email !== null) {
+            axios.put(url, toChange)
+            for (let i = 0; i < this.people.length; i++) {
+              if (this.people[i]._id === this.toUpdate) {
+                this.people[i] = toChange
+              }
+            }
+          }
+          this.showForm = false
+          this.formToUpdate = false
+        })
     }
   }
 }
