@@ -12,11 +12,15 @@
       </md-table-row>
       <div>{{ toUpdate }}</div>
       <div class="md-layout-item md-size-100 text-right">
-        <md-button class="md-info" @click="enterNew" v-if="!formToCreate">Create New Account</md-button>
-        <md-button class="md-info" @click="cancelOp" v-if="formToCreate">Cancel</md-button>
+        <md-button class="md-info" @click="enterNew" v-if="!showForm && !formToCreate">Create</md-button>
+        <md-button class="md-info" @click="updateInst" v-if="toUpdate && !showForm && !formToUpdate">
+          Update
+        </md-button>
+        <md-button class="md-info" @click="cancelOp" v-if="showForm">Cancel</md-button>
       </div>
       <div>
-        <create-account-form v-if="formToCreate" @add-account="addAccount"></create-account-form>
+        <update-account-form v-if="showForm && formToUpdate" @update-account="updateAccount"></update-account-form>
+        <create-account-form v-if="showForm && formToCreate" @add-account="addAccount"></create-account-form>
       </div>
     </md-table>
   </div>
@@ -24,9 +28,11 @@
 
 <script>
 import axios from 'axios'
+import UpdateAccountForm from '../Forms/UpdateAccountForm'
 import CreateAccountForm from '../Forms/CreateAccountForm'
 export default {
   components: {
+    UpdateAccountForm,
     CreateAccountForm
   },
   props: {
@@ -38,8 +44,10 @@ export default {
   data () {
     return {
       toUpdate: null,
+      toDelete: null,
       formToUpdate: false,
       formToCreate: false,
+      showForm: false,
       selected: [],
       accounts: []
     }
@@ -52,14 +60,17 @@ export default {
   },
   methods: {
     enterNew () {
-      if (!this.formToCreate) {
-        this.formToCreate = true
-      }
+      this.showForm = true
+      this.formToCreate = true
     },
     cancelOp () {
-      if (this.formToCreate) {
-        this.formToCreate = false
-      }
+      this.showForm = false
+      this.formToCreate = false
+      this.formToUpdate = false
+    },
+    updateInst () {
+      this.showForm = true
+      this.formToUpdate = true
     },
     addAccount (obj) {
       if ((obj.person_id !== null) && (obj.bank_id !== null) && (obj.accBalance !== null)) {
@@ -87,8 +98,35 @@ export default {
         }
         alert(errorMsg)
       }
+    },
+    updateAccount (balance) {
+      if (!balance) {
+        alert('Please enter a valid bank balance to modify the account')
+      } else {
+        const url = 'http://localhost:4040/api/accounts/' + this.toUpdate
+        console.log(url)
+        let toChange = {}
+        axios.get(url)
+          .then(response => {
+            toChange = response.data
+          })
+          .then(() => {
+            console.log(toChange)
+            toChange.balance = balance
+            axios.put(url, toChange)
+            for (let i = 0; i < this.accounts.length; i++) {
+              if (this.accounts[i]._id === this.toUpdate) {
+                this.accounts[i] = toChange
+                console.log(this.accounts[i])
+              }
+            }
+          })
+          .then(() => {
+            this.showForm = false
+            this.formToUpdate = false
+          })
+      }
     }
-
   }
 }
 </script>

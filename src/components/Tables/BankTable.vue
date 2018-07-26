@@ -127,9 +127,11 @@ export default {
                 this.banks[i] = toChange
               }
             }
-            this.showForm = false
-            this.formToUpdate = false
           }
+        })
+        .then(() => {
+          this.showForm = false
+          this.formToUpdate = false
         })
     }
   },

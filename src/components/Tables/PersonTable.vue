@@ -112,6 +112,9 @@ export default {
           toChange = response.data
         })
         .then(() => {
+          if (obj.firstname === null && obj.lastname === null) {
+            alert('Please enter both first name and last name information to change customer name information')
+          }
           if (obj.firstname !== null && obj.lastname !== null) {
             toChange.customername = obj.firstname + ' ' + obj.lastname
           }
