@@ -29,7 +29,7 @@ export default {
   created () { // TODO - GOING TO BE THE DRIVER FUNCTION WHEN CONSTRUCTING THE GRAPH
   },
   methods: {
-    loadCustomers () {
+    loadPeople () {
       return new Promise(() => {
         axios.get('http://localhost:4040/api/customers')
           .then(response => {
