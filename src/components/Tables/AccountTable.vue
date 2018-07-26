@@ -5,6 +5,9 @@
         <md-table-cell md-label="Update">
           <md-radio v-model="toUpdate" :value="item._id"></md-radio>
         </md-table-cell>
+        <md-table-cell md-label="Delete">
+          <md-radio v-model="toDelete" :value="item._id"></md-radio>
+        </md-table-cell>
         <md-table-cell md-label="ID">{{ item._id }}</md-table-cell>
         <md-table-cell md-label="Person ID">{{ item.owner }}</md-table-cell>
         <md-table-cell md-label="Bank ID">{{ item.bank }}</md-table-cell>
@@ -16,6 +19,7 @@
         <md-button class="md-info" @click="updateInst" v-if="toUpdate && !showForm && !formToUpdate">
           Update
         </md-button>
+        <md-button class="md-info" @click="deleteAccount" v-if="toDelete">Delete</md-button>
         <md-button class="md-info" @click="cancelOp" v-if="showForm">Cancel</md-button>
       </div>
       <div>
@@ -126,6 +130,20 @@ export default {
             this.formToUpdate = false
           })
       }
+    },
+    deleteAccount () {
+      let accToDelete = {}
+      const url = 'http://localhost:4040/api/accounts/' + this.toDelete
+      for (let i = 0; i < this.accounts.length; i++) {
+        if (this.accounts[i]._id === this.toDelete) {
+          accToDelete = this.accounts[i]
+          this.accounts.splice(i, 1)
+        }
+      }
+      axios.delete(url, accToDelete)
+        .then(() => {
+          this.toDelete = null
+        })
     }
   }
 }

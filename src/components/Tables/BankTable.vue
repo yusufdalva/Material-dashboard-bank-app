@@ -5,6 +5,9 @@
         <md-table-cell md-label="Update">
           <md-radio v-model="toUpdate" :value="item._id"></md-radio>
         </md-table-cell>
+        <md-table-cell md-label="Delete">
+          <md-radio v-model="toDelete" :value="item._id"></md-radio>
+        </md-table-cell>
         <md-table-cell md-label="ID">{{ item._id }}</md-table-cell>
         <md-table-cell md-label="Bank Name">{{ item.bankname }}</md-table-cell>
         <md-table-cell md-label="Location">{{ item.location }}</md-table-cell>
@@ -16,9 +19,10 @@
         <md-button class="md-info" @click="updateInst" v-if="toUpdate && !showForm && !formToUpdate">
           Update
         </md-button>
+        <md-button class="md-info" @click="deleteBank" v-if="toDelete">Delete</md-button>
         <md-button class="md-info" @click="cancelOp" v-if="showForm">Cancel</md-button>
       </div>
-      <div>{{ toUpdate }}</div>
+      <div>To Update: {{ toUpdate }} , To Delete: {{ toDelete }}</div>
       <div>
         <update-bank-form v-if="showForm && formToUpdate" @update-bank="updateBank"></update-bank-form>
         <create-bank-form v-if="showForm && formToCreate" @add-bank="addBank"></create-bank-form>
@@ -133,6 +137,19 @@ export default {
           this.showForm = false
           this.formToUpdate = false
         })
+    },
+    deleteBank () {
+      let bankToDelete = {}
+      const url = 'http://localhost:4040/api/banks/' + this.toDelete
+      for (let i = 0; i < this.banks.length; i++) {
+        if (this.banks[i]._id === this.toDelete) {
+          bankToDelete = this.banks[i]
+          this.banks.splice(i, 1)
+        }
+      }
+      axios.delete(url, bankToDelete).then(() => {
+        this.toDelete = null
+      })
     }
   },
   components: {

@@ -24,6 +24,9 @@
         <md-icon>account_box</md-icon>
         <p>Accounts</p>
       </sidebar-link>
+      <sidebar-link to="/graph">
+        <p>Graph</p>
+      </sidebar-link>
       <sidebar-link to="/table">
         <md-icon>content_paste</md-icon>
         <p>Table list</p>

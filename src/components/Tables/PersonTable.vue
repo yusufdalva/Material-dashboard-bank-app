@@ -5,6 +5,9 @@
         <md-table-cell md-label="Update">
           <md-radio v-model="toUpdate" :value="item._id"></md-radio>
         </md-table-cell>
+        <md-table-cell md-label="Delete">
+          <md-radio v-model="toDelete" :value="item._id"></md-radio>
+        </md-table-cell>
         <md-table-cell md-label="ID">{{ item._id }}</md-table-cell>
         <md-table-cell md-label="Full Name">{{ item.customername }}</md-table-cell>
         <md-table-cell md-label="E-mail">{{ item.email }}</md-table-cell>
@@ -15,6 +18,7 @@
         <md-button class="md-info" @click="enterNew" v-if="!showForm && !formToCreate">Create</md-button>
         <md-button class="md-info" @click="updateInst" v-if="toUpdate && !showForm && !formToUpdate">
           Update</md-button>
+        <md-button class="md-info" @click="deleteCustomer" v-if="toDelete">Delete</md-button>
         <md-button class="md-info" @click="cancelOp" v-if="showForm">Cancel</md-button>
       </div>
       <div>
@@ -131,6 +135,20 @@ export default {
           }
           this.showForm = false
           this.formToUpdate = false
+        })
+    },
+    deleteCustomer () {
+      let customerToDelete = {}
+      const url = 'http://localhost:4040/api/customers/' + this.toDelete
+      for (let i = 0; i < this.people.length; i++) {
+        if (this.people[i]._id === this.toDelete) {
+          customerToDelete = this.people[i]
+          this.people.splice(i, 1)
+        }
+      }
+      axios.delete(url, customerToDelete)
+        .then(() => {
+          this.toDelete = null
         })
     }
   }

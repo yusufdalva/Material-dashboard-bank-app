@@ -6,6 +6,7 @@ import TableList from '@/pages/TableList.vue'
 import Customers from '@/pages/Customers.vue'
 import Banks from '@/pages/Banks.vue'
 import Accounts from '@/pages/Accounts.vue'
+import Graph from '@/pages/Graph.vue'
 
 const routes = [
   {
@@ -42,6 +43,11 @@ const routes = [
         path: 'table',
         name: 'Table List',
         component: TableList
+      },
+      {
+        path: 'graph',
+        name: 'Graph',
+        component: Graph
       }
     ]
   }
