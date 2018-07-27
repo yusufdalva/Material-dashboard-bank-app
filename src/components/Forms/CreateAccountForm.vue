@@ -34,7 +34,6 @@
             <div class="md-layout-item md-size-100 text-right">
               <md-button class="md-raised" type="submit" @click="submit">Submit</md-button>
             </div>
-            <div>Bank ID: {{ selectedBank }} , Person ID: {{ selectedPerson }}</div>
             </div>
         </md-card-content>
       </md-card>

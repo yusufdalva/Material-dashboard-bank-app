@@ -13,7 +13,6 @@
         <md-table-cell md-label="E-mail">{{ item.email }}</md-table-cell>
         <md-table-cell md-label="Join Date">{{ item.createdAt }}</md-table-cell>
       </md-table-row>
-      <div>{{ toUpdate }}</div>
       <div class="md-layout-item md-size-100 text-right">
         <md-button class="md-info" @click="enterNew" v-if="!showForm && !formToCreate">Create</md-button>
         <md-button class="md-info" @click="updateInst" v-if="toUpdate && !showForm && !formToUpdate">

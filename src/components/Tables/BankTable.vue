@@ -22,7 +22,6 @@
         <md-button class="md-info" @click="deleteBank" v-if="toDelete">Delete</md-button>
         <md-button class="md-info" @click="cancelOp" v-if="showForm">Cancel</md-button>
       </div>
-      <div>To Update: {{ toUpdate }} , To Delete: {{ toDelete }}</div>
       <div>
         <update-bank-form v-if="showForm && formToUpdate" @update-bank="updateBank"></update-bank-form>
         <create-bank-form v-if="showForm && formToCreate" @add-bank="addBank"></create-bank-form>

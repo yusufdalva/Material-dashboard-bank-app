@@ -25,6 +25,7 @@
         <p>Accounts</p>
       </sidebar-link>
       <sidebar-link to="/graph">
+        <md-icon>share</md-icon>
         <p>Graph</p>
       </sidebar-link>
       <sidebar-link to="/table">

@@ -27,25 +27,40 @@ export default {
     }
   },
   created () { // TODO - GOING TO BE THE DRIVER FUNCTION WHEN CONSTRUCTING THE GRAPH
+    Promise.all([this.loadPeople(), this.loadBanks(), this.loadAccounts()])
+      .then(() => { // CHECKPOINT - FETCHING DATA SUCCESSFUL
+        Promise.all([this.customersToGraph(), this.bankToGraph(), this.accountsToGraph()])
+          .then(() => { // CHECKPOINT - OBTAINING THE GRAPH DATA SUCCESSFUL
+            this.onLoad()
+          })
+      })
   },
   methods: {
     loadPeople () {
-      return new Promise(() => {
+      return new Promise((resolve, reject) => {
         axios.get('http://localhost:4040/api/customers')
           .then(response => {
             this.people = response.data
+            resolve(true)
+          })
+          .catch(err => {
+            reject(err)
           })
       })
     },
     loadBanks () {
-      return new Promise(() => {
+      return new Promise((resolve, reject) => {
         axios.get('http://localhost:4040/api/banks')
           .then(response => {
             this.banks = response.data
+            resolve(true)
+          })
+          .catch(err => {
+            reject(err)
           })
       })
     },
-    loadAcounts () {
+    loadAccounts () {
       return new Promise((resolve, reject) => {
         axios.get('http://localhost:4040/api/accounts')
           .then(response => {
