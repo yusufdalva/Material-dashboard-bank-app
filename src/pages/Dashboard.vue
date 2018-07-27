@@ -198,6 +198,7 @@ export default{
   },
   data () {
     return {
+      socket: io('localhost:3000'),
       dailySalesChart: {
         data: {
           labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
@@ -274,6 +275,25 @@ export default{
         ]
       }
     }
+  },
+  methods: {
+    notifyVue (verticalAlign, horizontalAlign, msg) {
+      var color = Math.floor((Math.random() * 4) + 1)
+      this.$notify(
+        {
+          message: msg,
+          icon: 'add_alert',
+          horizontalAlign: horizontalAlign,
+          verticalAlign: verticalAlign
+
+        })
+    }
+  },
+  mounted() {
+    this.socket.on('hello', (data) => {
+      this.notifyVue('top','left',data.msg)
+    });
   }
 }
+import io from 'socket.io-client';
 </script>

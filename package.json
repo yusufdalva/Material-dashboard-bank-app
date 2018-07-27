@@ -13,6 +13,8 @@
     "chartist": "0.11.0",
     "force-graph": "^1.8.0",
     "google-maps": "3.2.1",
+    "socket.io": "^2.1.1",
+    "socket.io-client": "^2.1.1",
     "vue": "2.5.16",
     "vue-clickaway": "2.2.2",
     "vue-material": "1.0.0-beta-8",
